@@ -11,14 +11,13 @@ module.exports = function (app) {
     res.render("login.ejs");
   });
 
-  app.post("/login", function (req, res) {
+  app.post("/login", async function (req, res) {
     const { email, password } = req.body;
 
-    const query = "SELECT * FROM users WHERE email = ?";
-    db.query(query, [email], (error, results) => {
-      if (error) {
-        throw error;
-      }
+    try {
+      const results = await db.query("SELECT * FROM users WHERE email = ?", [
+        email,
+      ]);
 
       if (results.length > 0) {
         const user = results[0];
@@ -31,18 +30,21 @@ module.exports = function (app) {
             email: user.email,
           };
 
-          res.redirect("/");
+          return res.redirect("/");
         } else {
-          res.render("login.ejs", {
+          return res.render("login.ejs", {
             message: "Invalid email or password. Please try again.",
           });
         }
       } else {
-        res.render("login.ejs", {
+        return res.render("login.ejs", {
           message: "Invalid email or password. Please try again.",
         });
       }
-    });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send("Internal Server Error");
+    }
   });
 
   app.get("/register", function (req, res) {
