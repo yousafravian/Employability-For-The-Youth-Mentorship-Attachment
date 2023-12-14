@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employability for the Youth</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <nav>
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Profile <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Jobs <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
+            <a href="/postajob">Post a Job (Employers)</a>
+          </div>
+        </div>
+
+        <a href="/C.V">C.V</a>
+        <a href="/mentoring">Mentoring</a>
+        <a href="/training">Training</a>
+      </div>
+    </nav>
+    
+    <h2><center>C.V</center></h2>
+    <main>
+        <div id="cvcontainer" style="text-align: center; margin-top: 20px;"></div>
+      <form action="/submitcv" method="post">
+        <label for="fieldofInterest"> Field of Interest: </label>
+        <select name="fieldofInterest" id="fieldofInterest">
+          <option value="select">Select One</option>
+          <option value="computing">Computing</option>
+          <option value="law">Law</option>
+          <option value="finance">Finance</option>
+          <option value="economics">Economics</option>
+          <option value="business">Business</option>
+        </select>
+        <br />
+        <label>Skills:</label>
+        <div>
+            <input type="checkbox" name="skills" value="teamwork"> Teamwork
+            <input type="checkbox" name="skills" value="initiative"> Initiative
+            <input type="checkbox" name="skills" value="leadership"> Leadership
+            <input type="checkbox" name="skills" value="professionalism"> Professionalism
+            <input type="checkbox" name="skills" value="analytical"> Analytical
+            <input type="checkbox" name="skills" value="organised"> Organised
+            <input type="checkbox" name="skills" value="ability"> Ability to work under pressure
+        </div>
+        <br />
+        <label for="experience"> Previous Experience: </label>
+        <textarea name="experience" id="experience" rows="4" cols="50"></textarea>
+        <br />
+        <label for="education"> Education History: </label>
+        <textarea name="experience" id="experience" rows="4" cols="50"></textarea>
+        <br />
+        <label for="phonenumber"> Phone Number: </label>
+        <input type="tel" name="phonenumber" id="phonenumber" required>
+        <br />
+        <label for="email"> Email Address: </label>
+        <input type="email" name="email" id="email" required>
+        <br />
+        <label for="startdate"> Preferred Start Date: </label>
+        <input type="date" name="startdate" id="startdate" required>
+        <br />
+        </select>
+      </form>
+      <div id ="interestLinks" class="cvcontainer"></div>
+
+    </main>
+    <script>
+        function updateLinks() {
+          var fieldOfInterest = document.getElementById("fieldofInterest").value;
+          var interestLinksContainer = document.getElementById("interestLinks");
+          var links = "";
+    
+          if (fieldOfInterest === "computing") {
+            links += '<a href="https://novoresume.com/career-blog/computer-science-resume" target="_blank">CV Template 1</a>';
+            links += '<br><br>';
+            links += '<a href="https://enhancv.com/uk/cv-examples/computer-science/" target="_blank">CV Template 2</a>';
+            links += '<br><br>';
+            links += '<a href="https://cs.unc.edu/experience/career/tech-resume-samples/" target="_blank">CV Template 3</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.jobhero.com/resume/examples/computer-software" target="_blank">CV Template 4</a>';
+            links += '<br><br>';
+            links += '<a href="https://resumelab.com/uk/cv-examples/computer-science" target="_blank">CV Template 5</a>';
+          } else if (fieldOfInterest === "law") {
+            links += '<a href="https://standout-cv.com/pages/law-student-cv" target="_blank">CV Template 1</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.myperfectcv.co.uk/cv/examples/entry-level/law-student" target="_blank">CV Template 2</a>';
+            links += '<br><br>';
+            links += '<a href="https://enhancv.com/uk/cv-examples/legal/" target="_blank">CV Template 3</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.prospects.ac.uk/careers-advice/cvs-and-cover-letters/example-cvs/law-cv-example" target="_blank">CV Template 4</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.allaboutlaw.co.uk/law-careers/selection-assessment/law-cv-template" target="_blank">CV Template 5</a>';
+          } else if (fieldOfInterest === "finance") {
+            links += '<a href="https://enhancv.com/uk/cv-examples/finance/" target="_blank">CV Template 1</a>';
+            links += '<br><br>';
+            links += '<a href="https://standout-cv.com/pages/finance-cv-example " target="_blank">CV Template 2</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.myperfectcv.co.uk/cv/examples/finance" target="_blank">CV Template 3</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.cvmaker.uk/cv-example/finance" target="_blank">CV Template 4</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.visualcv.com/blog/finance-cv-examples/" target="_blank">CV Template 5</a>';
+          } else if (fieldOfInterest === "economics") {
+            links += '<a href="https://resumaker.ai/cv-examples/economist/" target="_blank">CV Template 1</a>';
+            links += '<br<br>';
+            links += '<a href="https://www.resume-now.com/cv/templates/sciences/economist" target="_blank">CV Template 2</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.myperfectresume.com/resume/examples/sciences/economist" target="_blank">CV Template 3</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.jobhero.com/resume/examples/sciences/economist " target="_blank">CV Template 4</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.livecareer.com/resume-examples/economist" target="_blank">CV Template 5</a>';
+          } else if (fieldOfInterest === "business") {
+            links += '<a href="https://standout-cv.com/cv/business-management-graduate-cv-example" target="_blank">CV Template 1</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.kickresume.com/en/help-center/business-student-resume-sample/" target="_blank">CV Template 2</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.kickresume.com/en/help-center/business-management-graduate-resume-sample/" target="_blank">CV Template 3</a>';
+            links += '<br><br>';
+            links += '<a href="https://resumekraft.com/business-management-student-resume-example/" target="_blank">CV Template 4</a>';
+            links += '<br><br>';
+            links += '<a href="https://www.york.ac.uk/media/studenthome/workandvolunteering/otherpdfsanddocs/examplecvs/Business%20and%20Finanace%20example%20CV.pdf" target="_blank">CV Template 5</a>';
+          }
+    
+          interestLinksContainer.innerHTML = links;
+        }
+    
+        document.getElementById("fieldofInterest").addEventListener("change", updateLinks);
+            updateLinks();
+      </script>
+    <footer>
+      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

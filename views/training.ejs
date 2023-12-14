@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employability for the Youth</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <nav>
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Profile <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Jobs <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
+            <a href="/postajob">Post a Job (Employers)</a>
+          </div>
+        </div>
+
+        <a href="/C.V">C.V</a>
+        <a href="/mentoring">Mentoring</a>
+        <a href="/training">Training</a>
+      </div>
+    </nav>
+
+    <h2><center>Training</center></h2>
+    <main>
+      <div class="container">
+        <div class="skillsbox">
+          <h3>What skills do you wish to acquire?</h3>
+          <form id="skillsform" action="/submitskills" method="post">
+            <ul>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Programming"
+                />
+                Programming
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Software Developing"
+                />
+                Software Developing
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Vocal Communication"
+                />
+                Vocal Communication
+              </li>
+              <li>
+                <input type="checkbox" name="selectskills" value="Leadership" />
+                Leadership
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Financial Management"
+                />
+                Financial Management
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Adaptability"
+                />
+                Adaptablity
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Organisation"
+                />
+                Organisation
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  name="selectskills"
+                  value="Logical Thinking"
+                />
+                Logical Thinking
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="training" class="trainingcourses">
+          <h3>
+            Based on your option these are the training courses available online
+          </h3>
+          <div id="training-courses-container"></div>
+        </div>
+        <div id="popular" class="popularcourses">
+          <h3>Most popular training programs other users partake in</h3>
+          <a
+            href="https://advanceonline.cam.ac.uk/courses/compelling-communication-skills/?utm_medium=cpc&utm_source=google&utm_campaign=5A_CCS_Geo1_%7BB%7D&gad_source=1&gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWuWO5eRmdPvs574DYy2L5TLx2VXQilpZh6wY84vu6p16wSb35qiUT0aAq1aEALw_wcB"
+            target="_blank"
+          >
+            Communication Skills Course
+          </a>
+          <br />
+          <a
+            href="https://www.simplilearn.com/mobile-and-software-development/python-development-training"
+            target="_blank"
+          >
+            Programming Skills Course
+          </a>
+          <br />
+          <a
+            href="https://www.theknowledgeacademy.com/courses/personal-development-training/organisational-skills/"
+            target="_blank"
+          >
+            Organisation Skills Course
+          </a>
+          <br />
+          <a
+            href="https://cpdonline.co.uk/course/team-leading/?gad_source=1&gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWtlXodaX9-WiqJmHKb4d-aQRF2RYrgLcF3o1C6rNI7F862sYUEHlxYaAvwaEALw_wcB"
+            target="_blank"
+          >
+            Leadership Skills Course
+          </a>
+          <br />
+          <a
+            href="https://www.futurelearn.com/courses/logical-and-critical-thinking"
+            target="_blank"
+          >
+            Logical Thinking Skills Course
+          </a>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const skillsbox = document.querySelector(".skillsbox");
+        const training = document.getElementById("training-courses-container");
+
+        skillsbox.addEventListener("change", function (event) {
+          if (event.target.type === "checkbox") {
+            const selectskills = Array.from(
+              document.querySelectorAll('[name="selectskills"]:checked')
+            ).map((checkbox) => checkbox.value);
+
+            updateTrainingCourses(selectskills);
+          }
+        });
+
+        function updateTrainingCourses(selectedSkills) {
+          const coursesHtml = selectedSkills
+            .map((skill) => {
+              const courseLinks = getCourseLinksForSkill(skill);
+              return `
+                  <h4>Courses for ${skill}</h4>
+                  ${courseLinks.join("<br/>")}
+                `;
+            })
+            .join("");
+
+          training.innerHTML = coursesHtml;
+        }
+
+        function getCourseLinksForSkill(skill) {
+          const courseMappings = {
+            Programming: [
+              '<a href="https://skills.cogrammar.com/?utm_source=google&utm_medium=cpc&utm_campaign={aip_HyperionDev-DfE_Conversion_Search}&utm_content=158277155652&utm_term=free%20coding%20courses&gad_source=1&gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWs6xeohajNGHuHbgQ-4belRUEzWXfYPRkG9W6JIGQlRMuJtZ5DakMUaAkUhEALw_wcB" target="_blank">Software Engineering Bootcamp</a>',
+              '<a href="https://www.futurelearn.com/courses/computer-programming-for-everyone" target="_blank">Introduction to Computer Programming</a>',
+              '<a href="https://www.codecademy.com/" target="_blank">Coding</a>',
+            ],
+            "Software Developing": [
+              '<a href="https://codefirstgirls.com/courses/coding-kickstarter/?utm_source=google&utm_medium=cpc&utm_campaign=19683759491:&utm_term={keywordid}:coding%20classes:b:&utm_content=145848882213:647977329288:g::c&hsa_acc=4524824748&hsa_cam=19683759491&hsa_grp=145848882213&hsa_mt=b&hsa_src=g&hsa_ad=647977329288&hsa_net=adwords&hsa_kw=coding%20classes&hsa_tgt=aud-1959322198445:kwd-1302885925&hsa_ver=3&gad_source=1&gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWt7sp0UqsoHIlcKZC3Ui5DqW59vu65s7Q_BP6qPvUvghpCyAhXiS1saAssrEALw_wcB" target="_blank">Software Development Kickstarter Class </a>',
+              '<a href="https://www.futurelearn.com/courses/computer-science-essentials-algorithms" target="_blank">Fundamentals of Algorithms</a>',
+              '<a href="https://alison.com/tag/software-development" target="_blank">Introduction to Software Development</a>',
+            ],
+            "Vocal Communication": [
+              '<a href="https://www.udemy.com/course/the-complete-communication-skills-master-class-for-life/" target="_blank">Communication Skills MAster Class</a>',
+              '<a href="https://www.mygreatlearning.com/academy/learn-for-free/courses/effective-communication" target="_blank">Effective Communication Course</a>',
+              '<a href="https://www.coursera.org/learn/finding-your-professional-voice" target="_blank">Finding your Professional Voice</a>',
+            ],
+            Leadership: [
+              '<a href="https://www.gatenbysanderson.com/academic-leadership-masterclasses/?gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWuFiW2aqCqRnktiwehz7JAkKWIgaXmoXpTjyrKQ3O8vDtk-TegH1yAaAqlnEALw_wcB" target="_blank">Academic Leadership Masterclasses</a>',
+              '<a href="https://leadership.global/landing-pages/leadership-training.html?gclid=Cj0KCQiA4NWrBhD-ARIsAFCKwWvSnxDXLPNZWf0dq9u_ntIEwQ4yNCqqLpK5PMMAxcvUXYrGxyGEDfYaAk5TEALw_wcB" target="_blank">Leadership Development</a>',
+              '<a href="https://alison.com/tag/leadership-skills" target="_blank">Leadership Skills Course</a>',
+            ],
+            "Financial Management": [
+              '<a href="https://www.mygreatlearning.com/academy/learn-for-free/courses/introduction-to-financial-management1" target="_blank">Introduction to Financial Management</a>',
+              '<a href="https://www.edx.org/learn/financial-management" target="_blank">Foundation of Financial Management</a>',
+              '<a href="https://www.udemy.com/course/master-a-financial-management-habit-and-worry-no-more/?utm_source=aff-campaign&utm_medium=udemyads&LSNPUBID=0F1O0otUXQc&ranMID=47901&ranEAID=0F1O0otUXQc&ranSiteID=0F1O0otUXQc-5g1Fon5kOmrTsGg2j4s4qA" target="_blank">Financial Management Habit Course</a>',
+            ],
+            Adaptability: [
+              '<a href="https://www.classcentral.com/course/adaptability-and-resiliency-25328" target="_blank">Adabptability and Resilience Skills</a>',
+              '<a href="https://esoftskills.com/courses/adaptability-training/" target="_blank">Skills of Adaptability</a>',
+              '<a href="https://www.skillsoft.com/channel/adapting-to-change-06720340-e71a-11e6-9835-f723b46a2688" target="_blank">Adapting to Change</a>',
+            ],
+            Organisation: [
+              '<a href="https://alison.com/course/organization-masterclass" target="_blank">Get Organized: A Masterclass</a>',
+              '<a href="https://www.skillshare.com/en/browse/organization" target="_blank">Organisation Course</a>',
+              '<a href="https://www.mandatorytraining.co.uk/products/organisational-skills-online-training-course-cpduk-accredited?variant=4591670624290" target="_blank">Organisational Skills Training</a>',
+            ],
+            "Logical Thinking": [
+              '<a href="https://www.futurelearn.com/courses/logical-and-critical-thinking" target="_blank">Logical and Critical Thinking Course</a>',
+              '<a href="https://conted.ox.ac.uk/courses/critical-reasoning-a-romp-through-the-foothills-of-logic-online" target="_blank">Critical Reasoning</a>',
+              '<a href="https://www.oxfordhomestudy.com/courses/online-management-courses/critical-thinking-free-online-course" target="_blank">Critical Thinking Short Course</a>',
+            ],
+          };
+
+          return courseMappings[skill] || [];
+        }
+      });
+    </script>
+
+    <footer>
+      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employability for the Youth</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <nav>
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Profile <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Jobs <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
+            <a href="/postajob">Post a Job (Employers)</a>
+          </div>
+        </div>
+
+        <a href="/C.V">C.V</a>
+        <a href="/mentoring">Mentoring</a>
+        <a href="/training">Training</a>
+      </div>
+    </nav>
+
+    <br /><br />
+    <div class="register">
+      <div class="register-box">
+        <h2>Create an Account</h2>
+
+        <form action="/register" method="post">
+          <div class="container">
+            <label for="name"><b> First Name:</b></label>
+            <input type="text" placeholder="Enter Name" name="name" required />
+
+            <label for="name"><b> Last Name:</b></label>
+            <input
+              type="text"
+              placeholder="Enter Name"
+              name="lastname"
+              required
+            />
+
+            <label for="email"><b>Email:</b></label>
+            <input
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              required
+            />
+            <label for="password"><b>Password:</b></label>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="password"
+              required
+            />
+
+            <label for="dob"><b>Date of Birth:</b></label>
+            <input type="date" name="dob" required />
+
+            <label for="userType"><b>User Type:</b></label>
+            <select
+              name="userType"
+              id="userType"
+              onchange="toggleFields()"
+              required
+            >
+              <option value="" disabled selected>Select user type</option>
+              <option value="employer">Employer</option>
+              <option value="student">Student</option>
+            </select>
+
+            <div id="company" style="display: none">
+              <label for="company"><b>Company:</b></label>
+              <input type="text" placeholder="Enter Company" name="company" />
+            </div>
+
+            <div id="education" style="display: none">
+              <label for="education"><b>Level of Education:</b></label>
+              <select name="education" required>
+                <option value="" disabled selected>
+                  Select your education level
+                </option>
+                <option value="secondary">Secondary School</option>
+                <option value="college">Sixth Form/College</option>
+                <option value="university">University</option>
+              </select>
+            </div>
+
+            <div class="checkbox-label">
+              <input type="checkbox" id="terms" name="terms" required />
+              <label for="terms">I agree to the terms and conditions</label>
+            </div>
+
+            <button type="submit" class="registerbutton">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
+    </footer>
+    <script>
+      function toggleFields() {
+        var userType = document.getElementById("userType").value;
+        var company = document.getElementById("company");
+        var education = document.getElementById("education");
+
+        if (userType === "employer") {
+          company.style.display = "block";
+          education.style.display = "none";
+        } else if (userType === "student") {
+          company.style.display = "none";
+          education.style.display = "block";
+        } else {
+          company.style.display = "none";
+          education.style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

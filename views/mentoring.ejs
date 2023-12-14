@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employability for the Youth</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <nav>
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Profile <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Jobs <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
+            <a href="/postajob">Post a Job (Employers)</a>
+          </div>
+        </div>
+
+        <a href="/C.V">C.V</a>
+        <a href="/mentoring">Mentoring</a>
+        <a href="/training">Training</a>
+      </div>
+    </nav>
+
+    <h2><center>Mentoring</center></h2>
+    <div class="container">
+      <label for="name"><b> Full Name:</b></label>
+      <input type="text" placeholder="Enter Name" name="name" required />
+
+      <label for="email"><b>Email:</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required />
+
+      <label for="phonenumber"><b> Phone Number: </b> </label>
+      <input
+        type="tel"
+        placeholder="Enter Phone Number"
+        name="phonenumber"
+        required
+      />
+      <label for="enquiry"><b>Enquiry: </b></label>
+      <textarea
+        name="enquiry"
+        placeholder="Enter Enquiry"
+        rows="4"
+        cols="50"
+      ></textarea>
+
+      <label for="cvfile"> <b>Upload C.V:</b></label>
+      <input
+        type="file"
+        name="cvfile"
+        id="cvfile"
+        accept=".pdf, .doc, .docx"
+        required
+      />
+      <br />
+      <button type="submit">Submit</button>
+    </div>
+    <footer>
+      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employability for the Youth</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <nav>
+      <!-- Navigation Bar -->
+      <div class="navbar">
+        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Profile <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="dropbutton">
+            Jobs <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
+            <a href="/postajob">Post a Job (Employers)</a>
+          </div>
+        </div>
+
+        <a href="/C.V">C.V</a>
+        <a href="/mentoring">Mentoring</a>
+        <a href="/training">Training</a>
+      </div>
+    </nav>
+    <br />
+    <div class="login">
+      <div class="login-box">
+        <h2>Login</h2>
+
+        <form action="/login" method="post">
+          <div class="container">
+            <label for="email"><b>Email:</b></label>
+            <input
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              required
+            />
+
+            <label for="password"><b>Password:</b></label>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="password"
+              required
+            />
+
+            <button type="submit" class="loginbutton">Login</button>
+            <br />
+            <a href="/forgot">Forgot Password?</a>
+            <br /><br />
+            <a href="/register">Create an Account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
