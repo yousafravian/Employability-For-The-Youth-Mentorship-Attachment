@@ -1,94 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Employability for the Youth</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
 
-  <body>
-    <nav>
-      <!-- Navigation Bar -->
-      <div class="navbar">
-        <a href="/"><img src="logo.png" alt="Logo" width="400px" /></a>
+<main>
+  <h1><center>Employability for the Youth</center></h1>
+  <p>
+    We’re here to help young people find jobs and grow their careers. Learn
+    more about our opportunities and how you can improve your employability
+    skills.
+  </p>
 
-        <div class="dropdown">
-          <button class="dropbutton">
-            Profile <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-          </div>
-        </div>
+  <div>
+    <img
+      class="youth-image"
+      src="/youth.jpeg"
+      alt="youth"
+      height="400px"
+      width="500px"
+    />
+  </div>
 
-        <div class="dropdown">
-          <button class="dropbutton">
-            Jobs <i class="fa fa-caret-down"></i>
-          </button>
-          <div class="dropdown-content">
-            <a href="/applyforjobs">Apply for Jobs (Youth)</a>
-            <a href="/postajob">Post a Job (Employers)</a>
-          </div>
-        </div>
+  <section>
+    <h3>Featured Jobs</h3>
+    <p>
+      Discover jobs available and opportunities to improve your skills and
+      increase your employability.
+    </p>
+    <button onclick="window.location.href='/applyforjobs'">
+      Find Jobs
+    </button>
 
-        <a href="/C.V">C.V</a>
-        <a href="/mentoring">Mentoring</a>
-        <a href="/training">Training</a>
-      </div>
-    </nav>
-    <main>
-      <h1><center>Employability for the Youth</center></h1>
+    <div>
+      <h3>Want to post a Job?</h3>
       <p>
-        We’re here to help young people find jobs and grow their careers. Learn
-        more about our opportunities and how you can improve your employability
-        skills.
+        Join other employers today and post any jobs and opportunities
+        available for students and young people today.
       </p>
+      <button onclick="window.location.href='/postajob'">Post a Job</button>
+    </div>
 
-      <div>
-        <img
-          class="youth-image"
-          src="/youth.jpeg"
-          alt="youth"
-          height="400px"
-          width="500px"
-        />
-      </div>
-
-      <section>
-        <h3>Featured Jobs</h3>
-        <p>
-          Discover jobs available and opportunities to improve your skills and
-          increase your employability.
-        </p>
-        <button onclick="window.location.href='/applyforjobs'">
-          Find Jobs
-        </button>
-
-        <div>
-          <h3>Want to post a Job?</h3>
-          <p>
-            Join other employers today and post any jobs and opportunities
-            available for students and young people today.
-          </p>
-          <button onclick="window.location.href='/postajob'">Post a Job</button>
-        </div>
-
-        <div>
-          <h3>Mentoring Programme</h3>
-          <p>
-            Send in your enquiry for and upload your CV to be mentored by some
-            of our top mentors.
-          </p>
-          <button onclick="window.location.href='mentoring'">
-            Enquire Now
-          </button>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
-    </footer>
-  </body>
-</html>
+    <div>
+      <h3>Mentoring Programme</h3>
+      <p>
+        Send in your enquiry for and upload your CV to be mentored by some
+        of our top mentors.
+      </p>
+      <button onclick="window.location.href='mentoring'">
+        Enquire Now
+      </button>
+    </div>
+  </section>
+</main>

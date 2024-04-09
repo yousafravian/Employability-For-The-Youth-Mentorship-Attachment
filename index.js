@@ -3,6 +3,8 @@ var express = require("express");
 var ejs = require("ejs");
 var bodyParser = require("body-parser");
 
+const expressLayouts = require('express-ejs-layouts');
+
 // Create the express application object
 const app = express();
 const port = 8000;
@@ -42,6 +44,9 @@ app.set("views", __dirname + "/views");
 
 // Tell Express that we want to use EJS as the templating engine
 app.set("view engine", "ejs");
+
+// Tell Express that we want to use layouts
+app.use(expressLayouts);
 
 // Tells Express how we should process html files
 // We want to use EJS's rendering engine

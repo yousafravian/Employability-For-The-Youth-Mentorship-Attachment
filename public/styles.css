@@ -13,7 +13,7 @@ h1 {
 
 .navbar {
   background-color: #bfaa1d;
-  overflow: hidden;
+  /* overflow: hidden; */
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -31,7 +31,7 @@ h1 {
 /* Navbar Dropdown */
 .dropdown {
   float: left;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .dropbutton {
@@ -47,7 +47,7 @@ h1 {
   display: none;
   position: absolute;
   background-color: #333;
-  min-width: 160px;
+  min-width: 200px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -73,6 +73,11 @@ footer {
   color: white;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
+footer p {
+  color: white;
+}
+
+
 /* Home page */
 main {
   /* max-width: 800px; */
@@ -157,8 +162,6 @@ button.loginbutton:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin-bottom: 50px;
 }
 
 .register-box {
@@ -201,11 +204,16 @@ select {
 
 .checkbox-label {
   display: flex;
-  align-items: center;
+  margin-bottom: 8px;
+}
+.checkbox-label input[type="checkbox"] {
+  margin-right: 5px; /* Adjust spacing between checkbox and label */
 }
 
 .checkbox-label input {
   margin-right: -300px;
+  width: 20px;
+  margin-bottom: 5px;
 }
 
 button {
