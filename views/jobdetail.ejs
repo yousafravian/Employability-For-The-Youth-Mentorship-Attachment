@@ -1,0 +1,41 @@
+<div class="container">
+  <h1>
+    <center>Job Detail</center>
+  </h1>
+
+  <div class="row">
+    <!-- Job Listing 1 -->
+
+
+    <div class="col-md-12 job-listing">
+      <div class="card joblinks">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= job.j_title %>
+          </h5>
+          <p class="card-text">
+            <%= job.j_cname %>
+          </p>
+          <p class="card-text">
+            <%= job.j_description %>
+          </p>
+            <% const deadline=new Date(job.j_appdeadline); %>
+              <p class="card-text">Deadline: <span class="text-danger">
+                  <%= deadline.getDate() %>/<%= deadline.getMonth() + 1 %>/<%= deadline.getFullYear() %>
+                </span></p>
+
+                <% if (typeof user !== 'undefined' && user.type === 'student') { %>
+                  <a href="#" class="btn button">Apply Now</a>
+                <% } %>
+
+        </div>
+        <div class="card-footer text-right text-muted">
+          Date Posted: <%= new Date(job.created_at).getDate() %>/<%= new Date(job.created_at).getMonth() + 1 %>/<%= new Date(job.created_at).getFullYear() %>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>

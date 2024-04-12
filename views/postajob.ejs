@@ -1,7 +1,8 @@
 
+    
     <div class="postajob">
       <div class="job-box">
-        <h2>Post a Job</h2>
+        <h1><center>Post a Job</center></h1>
 
         <form action="/postajob" method="post">
           <div class="container">
@@ -9,7 +10,7 @@
             <input
               type="text"
               placeholder="Enter Company Name"
-              name="name"
+              name="j_cname"
               required
             />
 
@@ -17,7 +18,7 @@
             <input
               type="text"
               placeholder="Enter Email"
-              name="email"
+              name="j_email"
               required
             />
 
@@ -25,22 +26,29 @@
             <input
               type="text"
               placeholder="Enter Job Title"
-              name="name"
+              name="j_title"
               required
             />
 
             <label for="jobDescription"><b>Job Description:</b></label>
             <textarea
               id="jobDescription"
-              name="jobDescription"
+              name="j_description"
               placeholder="Enter the job description here..."
               required
             ></textarea>
 
             <label for="deadline"><b>Application Deadline:</b></label>
-            <input type="date" id="deadline" name="deadline" required />
+            <input type="date" id="deadline" name="j_appdeadline" required />
 
-            <button type="post" class="postbutton">Post</button>
+            <button type="submit" class="postbutton">Post</button>
+
+            <% if (typeof message !== 'undefined' && message) { %>
+              <div class="mt-3 alert alert-success" role="alert">
+                <%= message %>
+              </div>
+            <% } %>
+
             <br />
           </div>
         </form>

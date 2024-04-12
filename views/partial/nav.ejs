@@ -22,8 +22,13 @@
           Jobs <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="/applyforjobs">Apply for Jobs (Youth)</a>
-          <a href="/postajob">Post a Job (Employers)</a>
+          <% if (typeof user !== 'undefined' && user.type === 'employer') { %>
+            <a href="/postajob">Post a Job</a>
+            <a href="/jobs">Jobs</a>
+            <% } else if (typeof user !== 'undefined' && user.type === 'student') { %>
+              <a href="/jobs">Apply for Jobs</a>
+          <% } %>
+          
         </div>
       </div>
 

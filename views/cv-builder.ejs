@@ -1,0 +1,227 @@
+<script>
+    function addMore() {
+        var educational_info_container = document.getElementById("educational_info");
+        var educational_info_Div = document.createElement("div");
+        educational_info_Div.classList.add("row");
+
+        educational_info_Div.innerHTML = `<div class="col-md-3">
+        <label for="degree"><b>Degree Name:</b></label>
+        <input type="text" placeholder="Enter Degree Name" name="degrees[]" required>
+        </div>
+  
+        <div class="col-md-5">
+        <label for="university"><b>University Name:</b></label>
+        <input type="text" placeholder="Enter University Name" name="universities[]" required>
+        </div>
+  
+        <div class="col-md-2">
+        <label for="start_year"><b>Start Year:</b></label>
+        <input type="date" name="startYears[]" required>
+        </div>
+  
+        <div class="col-md-2">
+        <label for="end_year"><b>End Year:</b></label>
+        <input type="date" name="endYears[]" required>
+        </div>
+      `;
+
+        educational_info_container.appendChild(educational_info_Div);
+    }
+
+
+
+    function addMoreKeySkills() {
+        var key_skills_container = document.getElementById("key_skills");
+        var key_skills_Div = document.createElement("div");
+        key_skills_Div.classList.add("row");
+
+        key_skills_Div.innerHTML = `<div class="col-md-12">
+        <label for="degree"><b>Skill:</b></label>
+        <input type="text" placeholder="i.e Strong analytical & problem solving skills" name="key_skills[]" required>
+        </div>
+      `;
+
+        key_skills_container.appendChild(key_skills_Div);
+    }
+
+    function addMoreExpertise() {
+        var expertise_area_container = document.getElementById("expertise_area");
+        var expertise_area_Div = document.createElement("div");
+        expertise_area_Div.classList.add("row");
+
+        expertise_area_Div.innerHTML = `<div class="col-md-12">
+        <label for="degree"><b>Expertise Area:</b></label>
+        <input type="text" placeholder="i.e Digital Marketing" name="expertise_area[]" required>
+        </div>
+      `;
+
+        expertise_area_container.appendChild(expertise_area_Div);
+    }
+
+    function addMoreHobbies() {
+        var hobbies_container = document.getElementById("hobbies");
+        var hobbies_Div = document.createElement("div");
+        hobbies_Div.classList.add("row");
+
+        hobbies_Div.innerHTML = `<div class="col-md-12">
+        <label for="degree"><b>Hobbies:</b></label>
+        <input type="text" placeholder="i.e Travelling" name="hobbies[]" required>
+        </div>
+      `;
+
+        hobbies_container.appendChild(hobbies_Div);
+    }
+
+</script>
+
+<main>
+    <h1 style="display: flex;">
+        <center>Theme</center>
+        <div style="width: 50px; height: 50px; border-radius: 50%; background-color: <%= theme === 'blue' ? '#0C243A' : '#007759' %>; margin-left: 10px;"></div>
+    </h1>
+
+    <div class="container">
+        <!-- <p class="text-primary">You are using <%= theme %> theme</p> -->
+
+
+
+
+        <div class="container">
+            <form action="/cv-builder" method="post">
+
+                <div class="form-group">
+                    <select name="theme" id="" hidden>
+                        <option value="<%= theme %>">
+                            <%= theme %>
+                        </option>
+                    </select>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <label for="name"><b> Full Name:</b></label>
+                        <input type="text" placeholder="Enter Name" name="name" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="fname"><b> Father Name:</b></label>
+                        <input type="text" placeholder="Enter Name" name="fname" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="mname"><b> Mother Name:</b></label>
+                        <input type="text" placeholder="Enter Name" name="mname" required />
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <label for="dob"><b> Date of Birth:</b></label>
+                        <input type="date" name="dob" id="dob" required>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="address"><b> Address:</b></label>
+                        <input type="text" placeholder="Enter Name" name="address" required />
+                    </div>
+                </div>
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <label for="aboutme"><b>About Me: </b></label>
+                        <textarea name="aboutme" placeholder="About Me" rows="4" cols="50"></textarea>
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <label for="phone"><b>Phone:</b></label>
+                        <input type="text" placeholder="Enter Phone" name="phone" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="email"><b>Email:</b></label>
+                        <input type="text" placeholder="Enter Email" name="email" required />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nationality"><b>Nationality:</b></label>
+                        <input type="text" placeholder="Enter Nationality" name="nationality" required />
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <label for="name"><b>Extra Skills:</b></label>
+                        <div class="skills-checkbox">
+                            <input type="checkbox" name="skills" value="teamwork"> Teamwork <br />
+                            <input type="checkbox" name="skills" value="initiative"> Initiative <br />
+                            <input type="checkbox" name="skills" value="leadership"> Leadership <br />
+                            <input type="checkbox" name="skills" value="professionalism"> Professionalism <br />
+                            <input type="checkbox" name="skills" value="analytical"> Analytical <br />
+                            <input type="checkbox" name="skills" value="organised"> Organised <br />
+                            <input type="checkbox" name="skills" value="ability"> Ability to work under pressure <br />
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h5>Educational Information</h5>
+                        <span id="educational_info"></span>
+                        <button type="button" class="addmorebtn" onclick="addMore()">Add</button>
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h5>Professional Skills</h5>
+                        <span id="key_skills"></span>
+                        <button type="button" class="addmorebtn" onclick="addMoreKeySkills()">Add</button>
+                    </div>
+                </div>
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h5>Expretise Area</h5>
+                        <span id="expertise_area"></span>
+                        <button type="button" class="addmorebtn" onclick="addMoreExpertise()">Add</button>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h5>Hobbies</h5>
+                        <span id="hobbies"></span>
+                        <button type="button" class="addmorebtn" onclick="addMoreHobbies()">Add</button>
+                    </div>
+                </div>
+
+
+
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <label for="startdate"><b> Preferred Start Date:</b></label>
+                        <input type="date" name="startdate" id="startdate" required>
+                    </div>
+                </div>
+
+
+                <button type="submit">Submit</button>
+
+
+
+            </form>
+
+        </div>
+
+
+    </div>
+</main>

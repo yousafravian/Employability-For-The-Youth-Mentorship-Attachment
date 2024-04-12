@@ -1,50 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Employability for the Youth</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
+<main>
+  <h1><center>Mentoring</center></h1>
+  <div class="container">
+    <label for="name"><b> Full Name:</b></label>
+    <input type="text" placeholder="Enter Name" name="name" required />
 
-  <body>
+    <label for="email"><b>Email:</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required />
 
-    <h1><center>Mentoring</center></h1>
-    <div class="container">
-      <label for="name"><b> Full Name:</b></label>
-      <input type="text" placeholder="Enter Name" name="name" required />
+    <label for="phonenumber"><b> Phone Number: </b> </label>
+    <input type="tel" placeholder="Enter Phone Number" name="phonenumber" required />
+    <label for="enquiry"><b>Enquiry: </b></label>
+    <textarea name="enquiry" placeholder="Enter Enquiry" rows="4" cols="50"></textarea>
 
-      <label for="email"><b>Email:</b></label>
-      <input type="text" placeholder="Enter Email" name="email" required />
-
-      <label for="phonenumber"><b> Phone Number: </b> </label>
-      <input
-        type="tel"
-        placeholder="Enter Phone Number"
-        name="phonenumber"
-        required
-      />
-      <label for="enquiry"><b>Enquiry: </b></label>
-      <textarea
-        name="enquiry"
-        placeholder="Enter Enquiry"
-        rows="4"
-        cols="50"
-      ></textarea>
-
-      <label for="cvfile"> <b>Upload C.V:</b></label>
-      <input
-        type="file"
-        name="cvfile"
-        id="cvfile"
-        accept=".pdf, .doc, .docx"
-        required
-      />
-      <br />
-      <button type="submit">Submit</button>
-    </div>
-    <footer>
-      <p>&copy; 2023 Employability for the Youth. All rights reserved.</p>
-    </footer>
-  </body>
-</html>
+    <label for="cvfile"> <b>Upload C.V:</b></label>
+    <input type="file" name="cvfile" id="cvfile" accept=".pdf, .doc, .docx" required />
+    <br />
+    <button type="submit">Submit</button>
+  </div>
+</main>
