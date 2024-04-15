@@ -337,6 +337,10 @@ textarea {
   border: 2px solid #d4c66e;  
 }
 
+.already-applied {
+  color: red;
+}
+
 
 
 

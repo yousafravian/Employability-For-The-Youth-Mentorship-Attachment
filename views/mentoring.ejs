@@ -1,20 +1,37 @@
 <main>
-  <h1><center>Mentoring</center></h1>
+  <h1>
+    <center>Mentoring</center>
+  </h1>
   <div class="container">
-    <label for="name"><b> Full Name:</b></label>
-    <input type="text" placeholder="Enter Name" name="name" required />
+    <form action="/mentoring" method="post" enctype="multipart/form-data">
+      <label for="name"><b> Full Name:</b></label>
+      <input type="text" placeholder="Enter Name" name="m_name" required />
 
-    <label for="email"><b>Email:</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required />
+      <label for="email"><b>Email:</b></label>
+      <input type="text" placeholder="Enter Email" name="m_email" required />
 
-    <label for="phonenumber"><b> Phone Number: </b> </label>
-    <input type="tel" placeholder="Enter Phone Number" name="phonenumber" required />
-    <label for="enquiry"><b>Enquiry: </b></label>
-    <textarea name="enquiry" placeholder="Enter Enquiry" rows="4" cols="50"></textarea>
+      <label for="phonenumber"><b> Phone Number: </b> </label>
+      <input type="tel" placeholder="Enter Phone Number" name="m_phone" required />
 
-    <label for="cvfile"> <b>Upload C.V:</b></label>
-    <input type="file" name="cvfile" id="cvfile" accept=".pdf, .doc, .docx" required />
-    <br />
-    <button type="submit">Submit</button>
+      <label for="enquiry"><b>Enquiry: </b></label>
+      <textarea name="m_enquiry" placeholder="Enter Enquiry" rows="4" cols="50" required></textarea>
+
+      <label for="cvfile"> <b>Upload C.V:</b></label>
+      <input type="file" name="file" id="cvfile" accept=".pdf" required />
+      <br />
+      <button type="submit">Submit</button>
+
+      <% if (typeof error_message !== 'undefined' && error_message) { %>
+        <div class="mt-3 alert alert-danger" role="alert">
+          <%= error_message %>
+        </div>
+      <% } %>
+      <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mt-3 alert alert-success" role="alert">
+          <%= message %>
+        </div>
+      <% } %>
+
+    </form>
   </div>
 </main>

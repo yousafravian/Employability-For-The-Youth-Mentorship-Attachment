@@ -19,18 +19,27 @@
           <p class="card-text">
             <%= job.j_description %>
           </p>
-            <% const deadline=new Date(job.j_appdeadline); %>
-              <p class="card-text">Deadline: <span class="text-danger">
-                  <%= deadline.getDate() %>/<%= deadline.getMonth() + 1 %>/<%= deadline.getFullYear() %>
-                </span></p>
+          <% const deadline=new Date(job.j_appdeadline); %>
+            <p class="card-text">Deadline: <span class="text-danger">
+                <%= deadline.getDate() %>/<%= deadline.getMonth() + 1 %>/<%= deadline.getFullYear() %>
+              </span></p>
 
-                <% if (typeof user !== 'undefined' && user.type === 'student') { %>
-                  <a href="#" class="btn button">Apply Now</a>
+            <% if (typeof user !=='undefined' && user.type==='student' ) { %>
+              <% if (job.already_applied==='yes' ) { %>
+                <span class="already-applied">Already Applied</span>
+                <% } else { %>
+                  <a href="/applyforjob/<%= job.j_id %>" class="btn button">Apply Now</a>
+                  <% } %>
+                  <% } else if (typeof user !== 'undefined' && user.type === 'employer') { %>
+                    <p class="card-text">
+                        Job Applications: <%= job.jobApplicationsCount %>
+                    </p>
                 <% } %>
 
         </div>
         <div class="card-footer text-right text-muted">
-          Date Posted: <%= new Date(job.created_at).getDate() %>/<%= new Date(job.created_at).getMonth() + 1 %>/<%= new Date(job.created_at).getFullYear() %>
+          Date Posted: <%= new Date(job.created_at).getDate() %>/<%= new Date(job.created_at).getMonth() + 1 %>/<%= new
+                Date(job.created_at).getFullYear() %>
         </div>
       </div>
     </div>

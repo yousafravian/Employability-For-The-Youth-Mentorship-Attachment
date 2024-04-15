@@ -1,0 +1,40 @@
+<main>
+  
+<div class="container">
+  <h1><center>Mentoring Requests</center></h1>
+
+  <div class="row">
+    <!-- Job Listing 1 -->
+
+
+    <% for (let i=0; i < mentorings.length; i++) { %>
+      <div class="col-md-4 job-listing">
+        <div class="card joblinks">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= mentorings[i].m_name %>
+            </h5>
+            <p class="card-text">
+              <%= mentorings[i].m_email %>
+            </p>
+            <p class="card-text">
+              <%= mentorings[i].m_phone %>
+            </p>
+            <p class="card-text">
+              <%= mentorings[i].m_enquiry %>
+            </p>
+          </div>
+          <div class="card-footer text-right text-muted">
+            <!-- <embed src="data:application/pdf;base64, <%= mentorings[i].m_file.toString('base64') %>" type="application/pdf" width="100%" height="600px"> -->
+              <!-- <pre><%= mentorings[i].m_file.toString('utf-8') %></pre> -->
+              <a href="/file/<%= mentorings[i].m_id %>">View Attachment</a>
+          </div>
+        </div>
+      </div>
+      <% } %>
+
+
+
+  </div>
+</div>
+</main>

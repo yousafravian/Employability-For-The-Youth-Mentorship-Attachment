@@ -33,7 +33,11 @@
       </div>
 
       <a href="/C.V">C.V</a>
-      <a href="/mentoring">Mentoring</a>
+      <% if (typeof user !== 'undefined' && user.type === 'employer') { %>
+        <a href="/viewmentoring">Mentoring</a>
+        <% } else if (typeof user !== 'undefined' && user.type === 'student') { %>
+          <a href="/mentoring">Mentoring</a>
+      <% } %>
       <a href="/training">Training</a>
     </div>
   </nav>
