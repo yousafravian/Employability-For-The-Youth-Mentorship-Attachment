@@ -49,7 +49,6 @@ module.exports = function (app) {
   // Handle our routes
   app.get("/", authenticateUser, function (req, res) {
     res.render("index.ejs")
-    console.log("Auth User -->", req.session.user)
   });
 
   app.get("/login", function (req, res) {
@@ -70,7 +69,6 @@ module.exports = function (app) {
         const passwordMatch = bcrypt.compareSync(password, user.password);
 
         if (passwordMatch) {
-          console.log("pass matached")
           req.session.user = {
             id: user.id,
             name: user.name,
@@ -333,7 +331,6 @@ module.exports = function (app) {
     }
 
     req.body.educationalInformation = educationalInfo;
-    console.log(req.body);
 
 
     let themeOptions = {
@@ -450,7 +447,6 @@ module.exports = function (app) {
     // Fetch blob data from MySQL based on fileId
     db.query('SELECT m_name, m_file FROM mentorings WHERE m_id = ?', [fileId], (err, results) => {
       if (err) {
-        console.error('Error fetching file data:', err);
         return res.status(500).send('Error fetching file data from database.');
       }
 
@@ -471,5 +467,33 @@ module.exports = function (app) {
 
   app.get("/training", authenticateUser, function (req, res) {
     res.render("training.ejs");
+  });
+
+  app.post("/submitskills", authenticateUser, function (req, res) {
+
+    const {
+      selectedSkills
+    } = req.body;
+
+    const values = [
+      req.session.user.id,
+      JSON.stringify(selectedSkills)
+    ];
+
+    // Prepare SQL query to insert file into MySQL
+    const query = "INSERT INTO trainings (t_u_id, t_trainings) VALUES (?, ?)";
+
+    // Execute the SQL query
+    db.query(query, values, (err, result) => {
+      if (err) {
+        res.render("training.ejs", {
+          error_message: "Submission Failed! Please try again.",
+        });
+      }
+      res.render("training.ejs", {
+        message: "Submission Successfull!",
+      });
+    });
+
   });
 };

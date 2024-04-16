@@ -345,6 +345,35 @@ textarea {
 
 
 
+.selected {
+  border: 2px solid #007bff; /* Change color to indicate selection */
+}
+.card-title {
+  margin-bottom: 5px;
+}
+.card-description {
+  font-size: 14px;
+}
+
+
+.skillsbox {
+  padding: 20px;
+}
+.most-popular {
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+.second-row {
+  padding: 15px;
+}
+
+.addmorelink {
+  padding: 8px 14px;
+}
+
+
+
+
 
 
 
