@@ -1,7 +1,10 @@
+
 <nav>
     <!-- Navigation Bar -->
     <div class="navbar">
       <a href="/"><img src="/logo.png" alt="Logo" width="400px" /></a>
+
+      <% if (typeof user !== 'undefined') { %>
 
       <div class="dropdown">
         <button class="dropbutton">
@@ -32,12 +35,20 @@
         </div>
       </div>
 
-      <a href="/C.V">C.V</a>
+      
+      <% if (typeof user !== 'undefined' && user.type === 'student') { %>
+        <a href="/C.V">C.V</a>
+    <% } %>
       <% if (typeof user !== 'undefined' && user.type === 'employer') { %>
         <a href="/viewmentoring">Mentoring</a>
         <% } else if (typeof user !== 'undefined' && user.type === 'student') { %>
           <a href="/mentoring">Mentoring</a>
       <% } %>
-      <a href="/training">Training</a>
+      <% if (typeof user !== 'undefined' && user.type === 'student') { %>
+        <a href="/training">Training</a>
+    <% } %>
+
+    <% } %>
+      
     </div>
   </nav>

@@ -1,37 +1,52 @@
 <main>
-  
-<div class="container">
-  <h1><center>Jobs</center></h1>
 
-  <div class="row">
-    <!-- Job Listing 1 -->
+  <div class="container">
+    <h1>
+      <center>Jobs</center>
+    </h1>
+
+    <div class="row">
+      <!-- Job Listing 1 -->
 
 
-    <% for (let i=0; i < jobs.length; i++) { %>
-      <div class="col-md-4 job-listing">
-        <div class="card joblinks">
+      <% if (jobs.length === 0) { %>
+        <div class="col-md-12">
+        <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title">
-              <%= jobs[i].j_title %>
-            </h5>
-            <p class="card-text">
-              <%= jobs[i].j_cname %>
-            </p>
-              <% const deadline=new Date(jobs[i].j_appdeadline); %>
+            <p class="card-text">No Data Found!</p>
+          </div>
+        </div>
+        </div>
+      <% } else { %>
+        <% for (let i = 0; i < jobs.length; i++) { %>
+          <div class="col-md-4 job-listing">
+            <div class="card joblinks">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= jobs[i].j_title %>
+                </h5>
+                <p class="card-text">
+                  <%= jobs[i].j_cname %>
+                </p>
+                <% const deadline = new Date(jobs[i].j_appdeadline); %>
                 <p class="card-text">Deadline: <span class="text-danger">
                     <%= deadline.getDate() %>/<%= deadline.getMonth() + 1 %>/<%= deadline.getFullYear() %>
                   </span></p>
                 <a href="/jobs/<%= jobs[i].j_id %>" class="btn button">View Details</a>
+              </div>
+              <div class="card-footer text-right text-muted">
+                Date Posted: <%= new Date(jobs[i].created_at).getDate() %>/<%= new Date(jobs[i].created_at).getMonth() + 1 %>/<%= new Date(jobs[i].created_at).getFullYear() %>
+              </div>
+            </div>
           </div>
-          <div class="card-footer text-right text-muted">
-            Date Posted: <%= new Date(jobs[i].created_at).getDate() %>/<%= new Date(jobs[i].created_at).getMonth() + 1 %>/<%= new Date(jobs[i].created_at).getFullYear() %>
-          </div>
-        </div>
-      </div>
+        <% } %>
       <% } %>
+      
+      
 
 
 
+
+    </div>
   </div>
-</div>
 </main>

@@ -371,6 +371,14 @@ textarea {
   padding: 8px 14px;
 }
 
+main {
+  min-height: 400px;
+}
+
+.selectedSkills {
+  cursor: pointer;
+}
+
 
 
 

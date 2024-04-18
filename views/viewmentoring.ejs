@@ -7,6 +7,16 @@
     <!-- Job Listing 1 -->
 
 
+
+    <% if (mentorings.length === 0) { %>
+      <div class="col-md-12">
+        <div class="card text-center">
+          <div class="card-body">
+            <p class="card-text">No Mentorings Found!</p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
     <% for (let i=0; i < mentorings.length; i++) { %>
       <div class="col-md-4 job-listing">
         <div class="card joblinks">
@@ -32,7 +42,7 @@
         </div>
       </div>
       <% } %>
-
+      <% } %>
 
 
   </div>

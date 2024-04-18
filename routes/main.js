@@ -149,13 +149,14 @@ module.exports = function (app) {
       query = "SELECT * FROM jobs WHERE j_u_id = ?";
     }
     db.query(query, [req.session.user.id], (error, results) => {
+      let jobs = []
       if (error) {
         throw error;
       }
 
       if (results.length > 0) {
 
-        const jobs = results;
+        jobs = results;
 
         res.render("jobs.ejs", { jobs: jobs });
 
@@ -163,6 +164,7 @@ module.exports = function (app) {
 
         res.render("jobs.ejs", {
           message: "Unable to find jobs!",
+          jobs: jobs
         });
 
       }
@@ -287,7 +289,7 @@ module.exports = function (app) {
       if (error) {
         throw error;
       }
-      res.redirect("jobs.ejs")
+      res.redirect("/jobs")
     });
   });
 
@@ -424,16 +426,17 @@ module.exports = function (app) {
       if (error) {
         throw error;
       }
-
+      let mentorings = []
       if (results.length > 0) {
 
-        const mentorings = results;
+        mentorings = results;
         res.render("viewmentoring.ejs", { mentorings: mentorings });
 
       } else {
 
         res.render("viewmentoring.ejs", {
           message: "No Data Found!",
+          mentorings: mentorings
         });
 
       }
