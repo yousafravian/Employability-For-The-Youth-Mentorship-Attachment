@@ -134,7 +134,7 @@ const dynamicResume = (options, themeOptions) => {
                 <div class="right-side d-inline-block m-0 p-0 align-top">
                     <h2 class="name text-uppercase ml-3 my-2">${options.name}</h2>
 
-                    <div class="contact ml-3 mt-3">
+                    <div class="about ml-3 mt-3">
                         <div class="heading-text text-uppercase">About Me</div>
                         <p class="para mb-1">
                             ${options.aboutme}
