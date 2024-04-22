@@ -321,6 +321,7 @@ module.exports = function (app) {
     //Educational Info
     const { degrees, universities, startYears, endYears } = req.body;
     const educationalInfo = [];
+  console.log(req.body)
 
     for (let i = 0; i < degrees.length; i++) {
       const eduInfo = {

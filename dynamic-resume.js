@@ -100,23 +100,28 @@ const dynamicResume = (options, themeOptions) => {
                         });
                     
                         dynamicHTML += `</ul>
-                    </div>
+                    </div>`;
 
-                    <div class="skill ml-2 mt-2">
-                        <div class="heading-text text-uppercase">Extra Skill</div>
-                        <ul>
-                        `;
-
-                        options.skills.forEach((skill, index) => {
+                        if (options.skills && options.skills.length > 0) {
                             dynamicHTML += `
-                                                    <li>${skill}</li>`;
-                        });
+                                        <div class="skill ml-2 mt-2">
+                                            <div class="heading-text text-uppercase">Extra Skill</div>
+                                            <ul>
+                            `;
                     
-                        dynamicHTML += `</ul>
-                    </div>
+                            options.skills.forEach((skill, index) => {
+                                dynamicHTML += `
+                                                <li>${skill}</li>`;
+                            });
+                    
+                            dynamicHTML += `
+                                            </ul>
+                                        </div>
+                            `;
+                        }
 
 
-                    <div class="hobbies ml-2 mt-2">
+                        dynamicHTML += ` <div class="hobbies ml-2 mt-2">
                         <div class="heading-text text-uppercase">hobbies</div>
                         <p class="para mb-1">
                         <ul>
