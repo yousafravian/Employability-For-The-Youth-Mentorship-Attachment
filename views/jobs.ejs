@@ -32,7 +32,7 @@
                 <p class="card-text">Deadline: <span class="text-danger">
                     <%= deadline.getDate() %>/<%= deadline.getMonth() + 1 %>/<%= deadline.getFullYear() %>
                   </span></p>
-                <a href="/jobs/<%= jobs[i].j_id %>" class="btn button">View Details</a>
+                <a href="/jobs/<%= jobs[i]._id %>" class="btn button">View Details</a>
               </div>
               <div class="card-footer text-right text-muted">
                 Date Posted: <%= new Date(jobs[i].created_at).getDate() %>/<%= new Date(jobs[i].created_at).getMonth() + 1 %>/<%= new Date(jobs[i].created_at).getFullYear() %>

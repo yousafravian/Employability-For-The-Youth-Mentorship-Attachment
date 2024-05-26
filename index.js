@@ -3,7 +3,7 @@ var express = require("express");
 var ejs = require("ejs");
 var bodyParser = require("body-parser");
 
-const expressLayouts = require('express-ejs-layouts');
+const expressLayouts = require("express-ejs-layouts");
 
 // Create the express application object
 const app = express();
@@ -11,6 +11,16 @@ const port = 8000;
 const mysql = require("mysql");
 const session = require("express-session");
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.js or index.js
+const mongoose = require("mongoose");
+
+mongoose
+  .connect(
+    "mongodb+srv://surafelyimamsy:uRW3eJvuR0HRgPlV@cluster0.rrshcut.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  )
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Error connecting to MongoDB:", err));
 
 app.use(
   session({
@@ -20,20 +30,20 @@ app.use(
   })
 );
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "user",
-  password: "youth",
-  database: "employability",
-});
-// Connecting to the database
-db.connect((err) => {
-  if (err) {
-    throw err;
-  }
-  console.log("Connected to the database");
-});
-global.db = db;
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "user",
+//   password: "youth",
+//   database: "employability",
+// });
+// // Connecting to the database
+// db.connect((err) => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log("Connected to the database");
+// });
+// global.db = db;
 
 // Set up css
 app.use(express.static(__dirname + "/public"));
@@ -59,5 +69,5 @@ var blogData = { blogName: "Employability for the Youth" };
 require("./routes/main")(app, blogData);
 
 // Start the web app listening
-app.listen(port, () => console.log("Example app listening on port ${port}!"));
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 module.exports = app;

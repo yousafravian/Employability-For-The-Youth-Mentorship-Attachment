@@ -1,108 +1,114 @@
 const app = require("../index");
 const bcrypt = require("bcrypt");
-const dynamicResume = require('../dynamic-resume');
-const pdf = require('html-pdf');
-const multer = require('multer')
-const fs = require('fs');
+const dynamicResume = require("../dynamic-resume");
+const pdf = require("html-pdf");
+const multer = require("multer");
+const fs = require("fs");
 const { Console } = require("console");
 
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const options = {
-  "height": "10.5in",        // allowed units: mm, cm, in, px
-  "width": "8in",        // allowed units: mm, cm, in, pxI
+  height: "10.5in", // allowed units: mm, cm, in, px
+  width: "8in", // allowed units: mm, cm, in, pxI
 };
 
-module.exports = function (app) {
+const mongoose = require("mongoose");
 
+// Importing models
+const User = require("../models/Users");
+const Job = require("../models/Job");
+const JobApplication = require("../models/JobApplication");
+const Mentoring = require("../models/Mentoring");
+const Training = require("../models/Training");
+
+module.exports = function (app) {
   function authenticateUser(req, res, next) {
     if (req.session.user) {
       res.locals.user = req.session.user;
       return next();
     }
-    res.redirect('/login');
+    res.redirect("/login");
   }
 
-  function hasAppliedForJob(userId, jobId, callback) {
-    const query = "SELECT * FROM job_applications WHERE ja_j_id = ? AND ja_u_id = ?";
-    db.query(query, [jobId, userId], (error, results) => {
-      if (error) {
-        callback(error, null);
-        return;
-      }
-      callback(null, results.length > 0); // If there are results, user has already applied, otherwise not
-    });
+  // Function to check if a user has applied for a job
+  async function hasAppliedForJob(userId, jobId) {
+    try {
+      const count = await JobApplication.countDocuments({
+        ja_j_id: jobId,
+        ja_u_id: userId,
+      });
+      return count > 0;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  function countJobApplications(jobId, callback) {
-    const query = "SELECT COUNT(*) AS jobApplicationsCount FROM job_applications WHERE ja_j_id = ?";
-    db.query(query, [jobId], (error, results) => {
-      if (error) {
-        callback(error, null);
-        return;
-      }
-      callback(null, results[0].jobApplicationsCount); // If there are results, user has already applied, otherwise not
-    });
+  // Function to count job applications
+  async function countJobApplications(jobId) {
+    try {
+      const count = await JobApplication.countDocuments({ ja_j_id: jobId });
+      return count;
+    } catch (error) {
+      throw error;
+    }
   }
-
   // Handle our routes
   app.get("/", authenticateUser, function (req, res) {
-    res.render("index.ejs")
+    res.render("index.ejs");
   });
 
   app.get("/login", function (req, res) {
     res.render("login.ejs");
   });
 
-  app.post("/login", function (req, res) {
+  app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const query = "SELECT * FROM users WHERE email = ?";
-    db.query(query, [email], (error, results) => {
-      if (error) {
-        throw error;
+    try {
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res.render("login.ejs", {
+          message: "Invalid email or password. Please try again.",
+        });
       }
 
-      if (results.length > 0) {
-        const user = results[0];
-        const passwordMatch = bcrypt.compareSync(password, user.password);
+      const passwordMatch = await bcrypt.compare(password, user.password);
 
-        if (passwordMatch) {
-          req.session.user = {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            type: user.userType
-          };
-          res.redirect(`/`);
-
-        } else {
-          res.render("login.ejs", {
-            message: "Invalid email or password. Please try again.",
-          });
-        }
+      if (passwordMatch) {
+        req.session.user = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          type: user.userType,
+        };
+        res.redirect("/");
       } else {
         res.render("login.ejs", {
           message: "Invalid email or password. Please try again.",
         });
       }
-    });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   });
 
-  app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
+  app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
       if (err) {
-        return res.redirect('/');
+        return res.redirect("/");
       }
-      res.redirect('/login');
+      res.redirect("/login");
     });
   });
 
   app.get("/register", function (req, res) {
     res.render("register.ejs");
   });
-  app.post("/register", function (req, res) {
+  app.post("/register", async (req, res) => {
     const {
       name,
       lastname,
@@ -114,112 +120,73 @@ module.exports = function (app) {
       education,
     } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
-
-    const query =
-      "INSERT INTO users (name, lastname, email, password, dob, userType, company, education) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-    const values = [
+    const newUser = await User.create({
       name,
       lastname,
       email,
-      hashedPassword,
+      password: hashedPassword,
       dob,
       userType,
       company,
       education,
-    ];
-    db.query(query, values, (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.redirect("/login");
     });
+
+    console.log(newUser);
+
+    res.redirect("/login");
   });
 
   app.get("/forgot", function (req, res) {
     res.render("forgot.ejs");
   });
 
-  app.get("/jobs", authenticateUser, function (req, res) {
-
-    let query;
-    if (req.session.user.type === "student") {
-      query = "SELECT * FROM jobs";
-    } else if (req.session.user.type === "employer") {
-      query = "SELECT * FROM jobs WHERE j_u_id = ?";
-    }
-    db.query(query, [req.session.user.id], (error, results) => {
-      let jobs = []
-      if (error) {
-        throw error;
+  // /jobs route
+  app.get("/jobs", authenticateUser, async function (req, res) {
+    try {
+      let query;
+      if (req.session.user.type === "student") {
+        query = {};
+      } else if (req.session.user.type === "employer") {
+        query = { j_u_id: req.session.user.id };
       }
 
-      if (results.length > 0) {
+      const jobs = await Job.find(query);
 
-        jobs = results;
-
-        res.render("jobs.ejs", { jobs: jobs });
-
+      if (jobs.length > 0) {
+        res.render("jobs.ejs", { jobs });
       } else {
-
-        res.render("jobs.ejs", {
-          message: "Unable to find jobs!",
-          jobs: jobs
-        });
-
+        res.render("jobs.ejs", { message: "Unable to find jobs!", jobs: [] });
       }
-    });
-
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   });
 
-  app.get("/jobs/:j_id", authenticateUser, function (req, res) {
+  // /jobs/:j_id route
+  app.get("/jobs/:j_id", authenticateUser, async function (req, res) {
     const jobId = req.params.j_id;
-    const query = "SELECT * FROM jobs where j_id = ?";
-    db.query(query, [jobId], (error, results) => {
-      if (error) {
-        throw error;
-      }
+    console.log("TTRYING");
 
-      if (results.length > 0) {
-
-        const job = results[0];
-
-
-        if (req.session.user.type == "student") {
-
-          // Check if user has applied for each job
-          hasAppliedForJob(req.session.user.id, job.j_id, (err, applied) => {
-            if (err) {
-              throw err;
-            }
-            job.already_applied = (applied) ? "yes" : "no";
-            res.render("jobdetail.ejs", { job: job });
-
-          });
-
+    try {
+      const job = await Job.findById(jobId);
+      if (job) {
+        if (req.session.user.type === "student") {
+          const applied = await hasAppliedForJob(req.session.user.id, jobId);
+          job.already_applied = applied ? "yes" : "no";
         } else {
-
-          countJobApplications(job.j_id, (err, count) => {
-            if (err) {
-              throw err;
-            }
-            job.jobApplicationsCount = count;
-            res.render("jobdetail.ejs", { job: job });
-
-          });
-
+          const count = await countJobApplications(jobId);
+          job.jobApplicationsCount = count;
         }
 
-
+        res.render("jobdetail.ejs", { job });
       } else {
-
-        res.render("jobdetail.ejs", {
-          message: "No Data Found!",
-        });
-
+        res.render("jobdetail.ejs", { message: "No Data Found!" });
       }
-    });
-
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   });
 
   app.get("/applyforjob/:j_id", function (req, res) {
@@ -227,277 +194,260 @@ module.exports = function (app) {
     res.render("applyforjob.ejs", { j_id: jobId });
   });
 
-  app.post("/applyforjob", authenticateUser, upload.single('file'), function (req, res) {
+  // /applyforjob route
+  app.post(
+    "/applyforjob",
+    authenticateUser,
+    upload.single("file"),
+    async function (req, res) {
+      try {
+        const { ja_message, ja_j_id } = req.body;
 
-    const {
-      ja_message,
-      ja_j_id
-    } = req.body;
+        const jobApplication = new JobApplication({
+          ja_j_id: ja_j_id,
+          ja_file: req.file.buffer,
+          ja_u_id: req.session.user.id,
+          ja_message: ja_message,
+        });
 
-    const values = [
-      ja_j_id,
-      req.file.buffer,
-      req.session.user.id,
-      ja_message
-    ];
+        await jobApplication.save();
 
-    // Prepare SQL query to insert file into MySQL
-    const query = "INSERT INTO job_applications (ja_j_id, ja_file, ja_u_id, ja_message) VALUES (?, ?, ?, ?)";
-
-    // Execute the SQL query
-    db.query(query, values, (err, result) => {
-      if (err) {
+        res.render("applyforjob.ejs", {
+          message: "Submission Successful!",
+          j_id: ja_j_id,
+        });
+      } catch (error) {
+        console.error(error);
         res.render("applyforjob.ejs", {
           error_message: "Application Failed! Please try again.",
-          j_id: ja_j_id
+          j_id: ja_j_id,
         });
       }
-      res.render("applyforjob.ejs", {
-        message: "Submission Successfull!",
-        j_id: ja_j_id
-      });
-    });
-
-  });
+    }
+  );
 
   app.get("/postajob", authenticateUser, function (req, res) {
     res.render("postajob.ejs");
   });
 
-  app.post("/postajob", authenticateUser, function (req, res) {
+  app.post("/postajob", authenticateUser, async function (req, res) {
+    try {
+      const { j_cname, j_email, j_title, j_description, j_appdeadline } =
+        req.body;
 
-    const {
-      j_cname,
-      j_email,
-      j_title,
-      j_description,
-      j_appdeadline,
-    } = req.body;
+      const job = new Job({
+        j_cname,
+        j_email,
+        j_title,
+        j_description,
+        j_appdeadline,
+        j_u_id: req.session.user.id,
+        created_at: new Date(),
+      });
 
-    const query =
-      "INSERT INTO jobs (j_cname, j_email, j_title, j_description, j_appdeadline, j_u_id) VALUES (?, ?, ?, ?, ?, ?)";
+      await job.save();
 
-    const values = [
-      j_cname,
-      j_email,
-      j_title,
-      j_description,
-      j_appdeadline,
-      req.session.user.id
-    ];
-    db.query(query, values, (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.redirect("/jobs")
-    });
+      res.redirect("/jobs");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   });
 
   app.get("/C.V", authenticateUser, function (req, res) {
     res.render("c.v.ejs");
   });
 
-  app.get('/cv-builder/:theme', authenticateUser, (req, res, next) => {
+  app.get("/cv-builder/:theme", authenticateUser, (req, res, next) => {
     switch (req.params.theme) {
-      case '1':
-        res.render('cv-builder.ejs', { theme: "blue" });
+      case "1":
+        res.render("cv-builder.ejs", { theme: "blue" });
         break;
-      case '2':
-        res.render('cv-builder.ejs', { theme: "green" });
+      case "2":
+        res.render("cv-builder.ejs", { theme: "green" });
         break;
       default:
-        res.render('cv-builder.ejs', { theme: "green" });
+        res.render("cv-builder.ejs", { theme: "green" });
         break;
     }
   });
 
-  app.post('/cv-builder', authenticateUser, (req, res, next) => {
-    // LOWERCASE -> REMOVE SPACE -> SHORT NAME 
+  app.post("/cv-builder", authenticateUser, (req, res, next) => {
+    // LOWERCASE -> REMOVE SPACE -> SHORT NAME
     const userName = req.body.name;
     const lowercaseName = userName.toLowerCase();
-    const noSpaceName = lowercaseName.replace(' ', '');
+    const noSpaceName = lowercaseName.replace(" ", "");
     const shortName = noSpaceName.slice(0, 10);
 
     //Educational Info
     const { degrees, universities, startYears, endYears } = req.body;
     const educationalInfo = [];
-  console.log(req.body)
 
     for (let i = 0; i < degrees.length; i++) {
       const eduInfo = {
         degree: degrees[i],
         university: universities[i],
         startYear: startYears[i],
-        endYear: endYears[i]
+        endYear: endYears[i],
       };
       educationalInfo.push(eduInfo);
     }
 
     req.body.educationalInformation = educationalInfo;
 
-
     let themeOptions = {
       leftTextColor: "rgb(91, 88, 255)",
-      leftBackgroundColor: 'rgb(12, 36, 58)',
-      wholeBodyColor: ' rgb(250, 250, 250)',
-      rightTextColor: 'rgb(12, 36, 58)'
+      leftBackgroundColor: "rgb(12, 36, 58)",
+      wholeBodyColor: " rgb(250, 250, 250)",
+      rightTextColor: "rgb(12, 36, 58)",
     };
 
-    if (req.body.theme === 'blue') {
-
+    if (req.body.theme === "blue") {
       // HTML TO PDF CONVERTING
-      pdf.create(dynamicResume(req.body, themeOptions), options).toFile(__dirname + "/docs/" + shortName + "-resume.pdf", (error, response) => {
-        if (error) throw Error("File is not created");
-        res.sendFile(response.filename);
-      });
-    } else if (req.body.theme === 'green') {
+      pdf
+        .create(dynamicResume(req.body, themeOptions), options)
+        .toFile(
+          __dirname + "/docs/" + shortName + "-resume.pdf",
+          (error, response) => {
+            if (error) throw Error("File is not created");
+            res.sendFile(response.filename);
+          }
+        );
+    } else if (req.body.theme === "green") {
       themeOptions = {
         leftTextColor: "rgb(183, 217, 255)",
-        leftBackgroundColor: 'rgb(0, 119, 89)',
-        wholeBodyColor: ' rgb(rgb(139, 247, 205))',
-        rightTextColor: 'rgb(0, 119, 89)'
+        leftBackgroundColor: "rgb(0, 119, 89)",
+        wholeBodyColor: " rgb(rgb(139, 247, 205))",
+        rightTextColor: "rgb(0, 119, 89)",
       };
 
       // HTML TO PDF CONVERTING
-      pdf.create(dynamicResume(req.body, themeOptions), options).toFile(__dirname + "/docs/" + shortName + "-resume.pdf", (error, response) => {
-        if (error) {
-          console.log(error)
-          throw Error("File is not created");
-        }
-        res.sendFile(response.filename);
-      });
+      pdf
+        .create(dynamicResume(req.body, themeOptions), options)
+        .toFile(
+          __dirname + "/docs/" + shortName + "-resume.pdf",
+          (error, response) => {
+            if (error) {
+              console.log(error);
+              throw Error("File is not created");
+            }
+            res.sendFile(response.filename);
+          }
+        );
     } else {
       // SETTING DEFAULT VALUE
       // HTML TO PDF CONVERTING
-      pdf.create(dynamicResume(req.body, themeOptions), options).toFile(__dirname + "/docs/" + shortName + "-resume.pdf", (error, response) => {
-        if (error) {
-          console.log(error)
-          throw Error("File is not created");
-        }
-        res.sendFile(response.filename);
-      });
+      pdf
+        .create(dynamicResume(req.body, themeOptions), options)
+        .toFile(
+          __dirname + "/docs/" + shortName + "-resume.pdf",
+          (error, response) => {
+            if (error) {
+              console.log(error);
+              throw Error("File is not created");
+            }
+            res.sendFile(response.filename);
+          }
+        );
     }
-
-
   });
 
   app.get("/mentoring", authenticateUser, function (req, res) {
     res.render("mentoring.ejs");
   });
 
-  app.post("/mentoring", authenticateUser, upload.single('file'), function (req, res) {
+  // /mentoring route
+  app.post(
+    "/mentoring",
+    authenticateUser,
+    upload.single("file"),
+    async function (req, res) {
+      try {
+        const { m_name, m_email, m_phone, m_enquiry } = req.body;
 
-    const {
-      m_name,
-      m_email,
-      m_phone,
-      m_enquiry,
-    } = req.body;
+        const mentoringRequest = new Mentoring({
+          m_name,
+          m_email,
+          m_phone,
+          m_enquiry,
+          m_file: req.file.buffer,
+          m_u_id: req.session.user.id,
+        });
 
-    const values = [
-      m_name,
-      m_email,
-      m_phone,
-      m_enquiry,
-      req.file.buffer,
-      req.session.user.id
-    ];
+        await mentoringRequest.save();
 
-    // Prepare SQL query to insert file into MySQL
-    const query = "INSERT INTO mentorings (m_name, m_email, m_phone, m_enquiry, m_file, m_u_id) VALUES (?, ?, ?, ?, ?, ?)";
-
-    // Execute the SQL query
-    db.query(query, values, (err, result) => {
-      if (err) {
+        res.render("mentoring.ejs", {
+          message: "Submission Successful!",
+        });
+      } catch (error) {
+        console.error(error);
         res.render("mentoring.ejs", {
           error_message: "Mentoring Request Failed! Please try again.",
         });
       }
-      res.render("mentoring.ejs", {
-        message: "Submission Successfull!",
-      });
-    });
+    }
+  );
 
-  });
+  // /viewmentoring route
+  app.get("/viewmentoring", authenticateUser, async function (req, res) {
+    try {
+      const mentorings = await Mentoring.find();
 
-  app.get("/viewmentoring", authenticateUser, function (req, res) {
-
-    const query = "SELECT * FROM mentorings";
-    db.query(query, (error, results) => {
-      if (error) {
-        throw error;
-      }
-      let mentorings = []
-      if (results.length > 0) {
-
-        mentorings = results;
-        res.render("viewmentoring.ejs", { mentorings: mentorings });
-
+      if (mentorings.length > 0) {
+        res.render("viewmentoring.ejs", { mentorings });
       } else {
-
         res.render("viewmentoring.ejs", {
           message: "No Data Found!",
-          mentorings: mentorings
+          mentorings: [],
         });
-
       }
-    });
-
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
   });
 
-  app.get('/file/:id', (req, res) => {
+  // Route to serve files
+  app.get("/file/:id", async (req, res) => {
     const fileId = req.params.id;
 
-    // Fetch blob data from MySQL based on fileId
-    db.query('SELECT m_name, m_file FROM mentorings WHERE m_id = ?', [fileId], (err, results) => {
-      if (err) {
-        return res.status(500).send('Error fetching file data from database.');
-      }
+    const mentoringAttachment = await Mentoring.findById(fileId);
 
-      if (results.length === 0) {
-        return res.status(404).send('File not found.');
-      }
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="Attachment.pdf"`
+    );
 
-      res.setHeader('Content-Disposition', `attachment; filename="Attachment.pdf"`);
+    // Set appropriate content type based on the file type
+    res.setHeader("Content-Type", "application/pdf");
 
-      // Set appropriate content type based on the file type
-      res.setHeader('Content-Type', 'application/pdf');
+    // Send the blob data as the response
+    res.send(mentoringAttachment.m_file);
 
-      // Send the blob data as the response
-      res.send(results[0].m_file);
-    });
+   
   });
-
 
   app.get("/training", authenticateUser, function (req, res) {
     res.render("training.ejs");
   });
 
-  app.post("/submitskills", authenticateUser, function (req, res) {
+  // Route to submit skills
+  app.post("/submitskills", authenticateUser, async (req, res) => {
+    const { selectedSkills } = req.body;
 
-    const {
-      selectedSkills
-    } = req.body;
-
-    const values = [
-      req.session.user.id,
-      JSON.stringify(selectedSkills)
-    ];
-
-    // Prepare SQL query to insert file into MySQL
-    const query = "INSERT INTO trainings (t_u_id, t_trainings) VALUES (?, ?)";
-
-    // Execute the SQL query
-    db.query(query, values, (err, result) => {
-      if (err) {
-        res.render("training.ejs", {
-          error_message: "Submission Failed! Please try again.",
-        });
-      }
-      res.render("training.ejs", {
-        message: "Submission Successfull!",
-      });
+    const training = await Training.create({
+      t_u_id: req.session.user.id,
+      t_trainings: JSON.stringify(selectedSkills),
     });
 
+    if (!training) {
+      return res.render("training.ejs", {
+        error_message: "Submission Failed! Please try again.",
+      });
+    }
+
+    res.render("training.ejs", {
+      message: "Submission Successful!",
+    });
   });
 };
