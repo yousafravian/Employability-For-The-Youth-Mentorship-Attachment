@@ -10,6 +10,7 @@ const app = express();
 const port = 8000;
 const mysql = require("mysql");
 const session = require("express-session");
+app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // app.js or index.js
